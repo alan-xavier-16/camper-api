@@ -7,7 +7,7 @@ const connectDB = require("./config/db");
 /* Load Environment Variables */ dotenv.config({ path: "./config/config.env" });
 /* Connect to database */ connectDB();
 
-/* Routes files */ const bootcamps = require("./routes/bootcamps");
+/* Routes files */ const bootcamps = require("./routes/bootcamps.route");
 const app = express();
 /* Body Parser */ app.use(express.json());
 
