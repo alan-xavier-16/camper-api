@@ -9,6 +9,7 @@ const connectDB = require("./config/db");
 
 /* Routes files */ const bootcamps = require("./routes/bootcamps");
 const app = express();
+/* Body Parser */ app.use(express.json());
 
 // Development Logging Middlewares
 if (process.env.NODE_ENV === "development") {
