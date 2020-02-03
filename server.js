@@ -8,7 +8,10 @@ const connectDB = require("./config/db");
 /* Load Environment Variables */ dotenv.config({ path: "./config/config.env" });
 /* Connect to database */ connectDB();
 
-/* Routes files */ const bootcamps = require("./routes/bootcamps.route");
+/* Routes files */
+const bootcamps = require("./routes/bootcamps.route");
+const courses = require("./routes/courses.route");
+
 const app = express();
 /* Body Parser */ app.use(express.json());
 
@@ -19,6 +22,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount Routers
 app.use("/api/v1/bootcamps", bootcamps);
+app.use("/api/v1/courses", courses);
 
 // Error Handler Middleware
 app.use(errorHandler);
