@@ -12,12 +12,14 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   const reqQuery = { ...req.query };
 
   // Remove the following fields from req.query, these fields used for Select, Sorting
-  const removeFields = ["select", "sort"];
+  const removeFields = ["select", "sort", "page", "limit"];
   removeFields.forEach(param => delete reqQuery[param]);
 
   // Filtering using MongoDB Comparison Operators
   let queryStr = JSON.stringify(reqQuery);
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
+
+  // Finding Matching Documents
   query = Bootcamp.find(JSON.parse(queryStr));
 
   // Select Fields
@@ -34,11 +36,39 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
     query = query.sort("-createdAt");
   }
 
+  // Pagination
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 25;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const totalDocs = await Bootcamp.countDocuments();
+
+  query = query.skip(startIndex).limit(limit);
+
+  // Execute Query
   const bootcamps = await query;
+
+  // Pagination Results
+  const pagination = {};
+
+  if (endIndex < totalDocs) {
+    pagination.next = {
+      page: page + 1,
+      limit
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit
+    };
+  }
 
   res.status(200).json({
     success: true,
     count: bootcamps.length,
+    pagination,
     data: bootcamps
   });
 });
