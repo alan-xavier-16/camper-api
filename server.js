@@ -13,6 +13,7 @@ const connectDB = require("./config/db");
 /* Routes files */
 const bootcamps = require("./routes/bootcamps.route");
 const courses = require("./routes/courses.route");
+const auth = require("./routes/auth.route");
 
 const app = express();
 /* Body Parser */ app.use(express.json());
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Mount Routers
 app.use("/api/v1/bootcamps", bootcamps);
 app.use("/api/v1/courses", courses);
+app.use("/api/v1/auth", auth);
 
 // Error Handler Middleware
 app.use(errorHandler);
