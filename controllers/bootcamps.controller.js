@@ -101,7 +101,7 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
   }
 
   // Ensure user OWNS the bootcamp
-  if (bootcamp.user.toString() !== req.user.id || req.user.role !== "admin") {
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
     return next(
       new ErrorResponse(
         `User ${req.user.id} is not authorized to delete this bootcamp`,
@@ -151,7 +151,7 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   }
 
   // Ensure user OWNS the bootcamp
-  if (bootcamp.user.toString() !== req.user.id || req.user.role !== "admin") {
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
     return next(
       new ErrorResponse(
         `User ${req.user.id} is not authorized to update this bootcamp`,
