@@ -10,6 +10,7 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
+const cors = require("cors");
 const errorHandler = require("./middleware/errorHandler");
 const connectDB = require("./config/db");
 
@@ -54,6 +55,9 @@ app.use(limiter); //  apply to all requests
 
 // Prevent HTTP Param Pollution
 app.use(hpp());
+
+// Enable CORS
+app.use(cors());
 
 // Set Static Folder
 app.use(express.static(path.join(__dirname, "public")));
